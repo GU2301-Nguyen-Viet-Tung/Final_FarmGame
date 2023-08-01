@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63644e6da32a2f249a984643f7431cee, type: 3}
+  m_Name: ItemScriptable
+  m_EditorClassIdentifier: 
+  ListItemUI:
+  - gameItemId: 1
+    Image: {fileID: -2134529902, guid: 18e505d3bad1434479db7b94b087b3e6, type: 3}
+  - gameItemId: 2
+    Image: {fileID: -1099291140, guid: 18e505d3bad1434479db7b94b087b3e6, type: 3}
+  - gameItemId: 3
+    Image: {fileID: 278274727, guid: 18e505d3bad1434479db7b94b087b3e6, type: 3}
+  - gameItemId: 4
+    Image: {fileID: 1235591854, guid: 18e505d3bad1434479db7b94b087b3e6, type: 3}
+  - gameItemId: 5
+    Image: {fileID: -1843950966, guid: 18e505d3bad1434479db7b94b087b3e6, type: 3}
+  - gameItemId: 6
+    Image: {fileID: -575834300, guid: 18e505d3bad1434479db7b94b087b3e6, type: 3}
+  - gameItemId: 11
+    Image: {fileID: 21300000, guid: d64f6b3a15ee6d94791ba25d646e6b62, type: 3}
+  - gameItemId: 12
+    Image: {fileID: 21300000, guid: 56d9b2ce2f565584780e2724238079a3, type: 3}
+  - gameItemId: 13
+    Image: {fileID: 21300000, guid: 870f2e570c7781f4d969f1579f0e6f00, type: 3}
+  - gameItemId: 14
+    Image: {fileID: 21300000, guid: a3c64894876f0fa42b623e86f9d725df, type: 3}
+  - gameItemId: 15
+    Image: {fileID: 21300000, guid: 9dda6e4be2785d34baf64cb59a452568, type: 3}
+  - gameItemId: 16
+    Image: {fileID: 21300000, guid: ed4adcd98d94d344999c9d4900253223, type: 3}

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "392227426088",
+    "firebase_url": "https://farm-game-firebase-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "farm-game-firebase",
+    "storage_bucket": "farm-game-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392227426088:android:a31a5db282b8e7bc768a1d",
+        "android_client_info": {
+          "package_name": "com.ngvitung.farm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "392227426088-ncbs4vr19o0plrft7uipsmbr3pgf2gbc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYwdRNOHng8nC4RlGHQxBEaYB68_46A0k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "392227426088-ncbs4vr19o0plrft7uipsmbr3pgf2gbc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

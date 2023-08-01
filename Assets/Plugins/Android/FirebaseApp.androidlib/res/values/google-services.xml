@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/firebase_database_url,@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_web_client_id">
+  <string name="firebase_database_url" translatable="false">https://farm-game-firebase-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+  <string name="gcm_defaultSenderId" translatable="false">392227426088</string>
+  <string name="google_storage_bucket" translatable="false">farm-game-firebase.appspot.com</string>
+  <string name="project_id" translatable="false">farm-game-firebase</string>
+  <string name="google_api_key" translatable="false">AIzaSyCYwdRNOHng8nC4RlGHQxBEaYB68_46A0k</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCYwdRNOHng8nC4RlGHQxBEaYB68_46A0k</string>
+  <string name="google_app_id" translatable="false">1:392227426088:android:a31a5db282b8e7bc768a1d</string>
+  <string name="default_web_client_id" translatable="false">392227426088-ncbs4vr19o0plrft7uipsmbr3pgf2gbc.apps.googleusercontent.com</string>
+</resources>
