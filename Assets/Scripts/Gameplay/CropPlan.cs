@@ -5,26 +5,27 @@ using UnityEngine.UI;
 
 public class CropPlan : MonoBehaviour
 {
-    [SerializeField] private GameObject carrot;
-    [SerializeField] private GameObject corn;
-    [SerializeField] private GameObject eggplant;
-    [SerializeField] private GameObject pumpkin;
-    [SerializeField] private GameObject tomato;
-    [SerializeField] private GameObject turnip;
-    [SerializeField] private List<GameObject> CarrotList;
-    [SerializeField] private List<GameObject> CornList;
-    [SerializeField] private List<GameObject> EggplantList;
-    [SerializeField] private List<GameObject> PumpkinList;
-    [SerializeField] private List<GameObject> TomatoList;
-    [SerializeField] private List<GameObject> TurnipList;
+    [SerializeField] private GameObject PFB_Brokoly;
+    [SerializeField] private GameObject PFB_Cabbage;
+    [SerializeField] private GameObject PFB_Carrot;
+    [SerializeField] private GameObject PFB_Corn;
+    [SerializeField] private GameObject PFB_Cucumber;
+    [SerializeField] private GameObject PFB_Eggplant;
+    [SerializeField] private GameObject PFB_Pumpkin;
+    [SerializeField] private GameObject PFB_Tomato;
+    [SerializeField] private List<GameObject> Dirt;
+    
     public MudState mudState = MudState.NONE;
     [SerializeField] private float time;
     [SerializeField] private int PlantTime = 10;
     private GameplayController controller;
     private bool UIActive = false;
     public int plantType;
+
     public enum MudState{
         NONE,
+        READY,
+        WATERING,
         PLANTING,
         DONE
     }
@@ -37,7 +38,27 @@ public class CropPlan : MonoBehaviour
         //float a = time/PlantTime;
         if (mudState == MudState.NONE)
         {
+            //gameObject.SetActive(false);
+            gameObject.GetComponent<MeshRenderer>().enabled = false;
+            foreach(GameObject dirt in Dirt)
+            {
+                dirt.GetComponent<MeshRenderer>().enabled = false;
+            }
+        }
+        else if (mudState == MudState.READY)
+        {
             time = 0;
+            foreach (GameObject dirt in Dirt)
+            {
+                dirt.SetActive(false);
+            }
+        }
+        else if (mudState == MudState.WATERING)
+        {
+            foreach (GameObject dirt in Dirt)
+            {
+                dirt.SetActive(true);
+            }
         }
         else if (mudState == MudState.PLANTING)
         {
@@ -52,49 +73,14 @@ public class CropPlan : MonoBehaviour
                     controller.ShowCropAction(this);
                 }
             }
-            switch (plantType)
+            foreach(GameObject dirt in Dirt)
             {
-                case 1:
-                    foreach (GameObject carrot in CarrotList)
-                    {
-                        carrot.transform.localScale = new Vector3(scaleVal, scaleVal, scaleVal);
-                    }
-                    break;
-                case 2:
-                    foreach (GameObject corn in CornList)
-                    {
-                        corn.transform.localScale = new Vector3(scaleVal, scaleVal, scaleVal);
-                    }
-                    break;
-                case 3:
-                    foreach (GameObject eggplant in EggplantList)
-                    {
-                        eggplant.transform.localScale = new Vector3(scaleVal, scaleVal, scaleVal);
-                    }
-                    break;
-                case 4:
-                    foreach (GameObject pumpkin in PumpkinList)
-                    {
-                        pumpkin.transform.localScale = new Vector3(scaleVal, scaleVal, scaleVal);
-                    }
-                    break;
-                case 5:
-                    foreach (GameObject tomato in TomatoList)
-                    {
-                        tomato.transform.localScale = new Vector3(scaleVal, scaleVal, scaleVal);
-                    }
-                    break;
-                case 6:
-                    foreach (GameObject turnip in TurnipList)
-                    {
-                        turnip.transform.localScale = new Vector3(scaleVal, scaleVal, scaleVal);
-                    }
-                    break;
+                dirt.transform.GetChild(0).transform.localScale = new Vector3(scaleVal, scaleVal, scaleVal);
             }
         }
         //else if (mudState == MudState.DONE)
         //{
-
+        //
         //}
     }
     private void OnTriggerEnter(Collider other)
@@ -114,8 +100,42 @@ public class CropPlan : MonoBehaviour
             UIActive = false;
         }
     }
+    public void Hoe()
+    {
+        //gameObject.SetActive(true);
+        SoundManager.Instance.PlaySFX(SoundEffect.SFX_03);
+        gameObject.GetComponent<MeshRenderer>().enabled = true;
+        foreach (GameObject dirt in Dirt)
+        {
+            dirt.GetComponent<MeshRenderer>().enabled = true;
+        }
+        mudState = MudState.READY;
+        if (UIActive == true)
+        {
+            controller.HideCropAction();
+            controller.ShowCropAction(this);
+        }
+    }
+    public void Water()
+    {
+        SoundManager.Instance.PlaySFX(SoundEffect.SFX_05);
+        mudState = MudState.PLANTING;
+        if (UIActive == true)
+        {
+            controller.HideCropAction();
+            controller.ShowCropAction(this);
+        }
+    }
     public void Crop(int plant)
     {
+        if(plant != 0)
+        {
+            SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
+        }
+        else
+        {
+            SoundManager.Instance.PlaySFX(SoundEffect.SFX_06);
+        }
         switch (plant)
         {
             case 1:
@@ -124,14 +144,12 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
-                carrot.SetActive(true);
-                corn.SetActive(false);
-                eggplant.SetActive(false);
-                pumpkin.SetActive(false);
-                tomato.SetActive(false);
-                turnip.SetActive(false);
+                foreach(GameObject dirt in Dirt)
+                {
+                    Instantiate(PFB_Brokoly, dirt.transform);
+                }
                 PlayerProfile.Instance.UseGameItem(GameItemId.ITEM_SEEDS_01, 1);
-                mudState = MudState.PLANTING;
+                mudState = MudState.WATERING;
                 plantType = 1;
                 break;
             case 2:
@@ -140,14 +158,12 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
-                carrot.SetActive(false);
-                corn.SetActive(true);
-                eggplant.SetActive(false);
-                pumpkin.SetActive(false);
-                tomato.SetActive(false);
-                turnip.SetActive(false);
+                foreach (GameObject dirt in Dirt)
+                {
+                    Instantiate(PFB_Cabbage, dirt.transform);
+                }
                 PlayerProfile.Instance.UseGameItem(GameItemId.ITEM_SEEDS_02, 1);
-                mudState = MudState.PLANTING;
+                mudState = MudState.WATERING;
                 plantType = 2;
                 break;
             case 3:
@@ -156,14 +172,12 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
-                carrot.SetActive(false);
-                corn.SetActive(false);
-                eggplant.SetActive(true);
-                pumpkin.SetActive(false);
-                tomato.SetActive(false);
-                turnip.SetActive(false);
+                foreach (GameObject dirt in Dirt)
+                {
+                    Instantiate(PFB_Carrot, dirt.transform);
+                }
                 PlayerProfile.Instance.UseGameItem(GameItemId.ITEM_SEEDS_03, 1);
-                mudState = MudState.PLANTING;
+                mudState = MudState.WATERING;
                 plantType = 3;
                 break;
             case 4:
@@ -172,14 +186,12 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
-                carrot.SetActive(false);
-                corn.SetActive(false);
-                eggplant.SetActive(false);
-                pumpkin.SetActive(true);
-                tomato.SetActive(false);
-                turnip.SetActive(false);
+                foreach (GameObject dirt in Dirt)
+                {
+                    Instantiate(PFB_Corn, dirt.transform);
+                }
                 PlayerProfile.Instance.UseGameItem(GameItemId.ITEM_SEEDS_04, 1);
-                mudState = MudState.PLANTING;
+                mudState = MudState.WATERING;
                 plantType = 4;
                 break;
             case 5:
@@ -188,14 +200,12 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
-                carrot.SetActive(false);
-                corn.SetActive(false);
-                eggplant.SetActive(false);
-                pumpkin.SetActive(false);
-                tomato.SetActive(true);
-                turnip.SetActive(false);
+                foreach (GameObject dirt in Dirt)
+                {
+                    Instantiate(PFB_Cucumber, dirt.transform);
+                }
                 PlayerProfile.Instance.UseGameItem(GameItemId.ITEM_SEEDS_05, 1);
-                mudState = MudState.PLANTING;
+                mudState = MudState.WATERING;
                 plantType = 5;
                 break;
             case 6:
@@ -204,51 +214,83 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
-                carrot.SetActive(false);
-                corn.SetActive(false);
-                eggplant.SetActive(false);
-                pumpkin.SetActive(false);
-                tomato.SetActive(false);
-                turnip.SetActive(true);
+                foreach (GameObject dirt in Dirt)
+                {
+                    Instantiate(PFB_Eggplant, dirt.transform);
+                }
                 PlayerProfile.Instance.UseGameItem(GameItemId.ITEM_SEEDS_06, 1);
-                mudState = MudState.PLANTING;
+                mudState = MudState.WATERING;
                 plantType = 6;
+                break;
+            case 7:
+                if (PlayerProfile.Instance.CheckItem(GameItemId.ITEM_SEEDS_07) == 0)
+                {
+                    plantType = -1;
+                    break;
+                }
+                foreach (GameObject dirt in Dirt)
+                {
+                    Instantiate(PFB_Pumpkin, dirt.transform);
+                }
+                PlayerProfile.Instance.UseGameItem(GameItemId.ITEM_SEEDS_07, 1);
+                mudState = MudState.WATERING;
+                plantType = 7;
+                break;
+            case 8:
+                if (PlayerProfile.Instance.CheckItem(GameItemId.ITEM_SEEDS_08) == 0)
+                {
+                    plantType = -1;
+                    break;
+                }
+                foreach (GameObject dirt in Dirt)
+                {
+                    Instantiate(PFB_Tomato, dirt.transform);
+                }
+                PlayerProfile.Instance.UseGameItem(GameItemId.ITEM_SEEDS_08, 1);
+                mudState = MudState.WATERING;
+                plantType = 8;
                 break;
             default:
                 switch (plantType)
                 {
                     case 1:
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_01, 9);
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_01, 5);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_01, 4);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_01, 1);
                         break;
                     case 2:
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_02, 9);
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_02, 5);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_02, 4);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_02, 1);
                         break;
                     case 3:
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_03, 9);
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_03, 5);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_03, 4);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_03, 1);
                         break;
                     case 4:
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_04, 9);
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_04, 5);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_04, 4);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_04, 1);
                         break;
                     case 5:
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_05, 9);
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_05, 5);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_05, 4);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_05, 1);
                         break;
                     case 6:
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_06, 9);
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_06, 5);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_06, 4);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_06, 1);
+                        break;
+                    case 7:
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_07, 4);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_07, 1);
+                        break;
+                    case 8:
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_08, 4);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_08, 1);
                         break;
                 }
-                carrot.SetActive(false);
-                corn.SetActive(false);
-                eggplant.SetActive(false);
-                pumpkin.SetActive(false);
-                tomato.SetActive(false);
-                turnip.SetActive(false);
-                mudState = MudState.NONE;
+                foreach(GameObject dirt in Dirt)
+                {                    
+                    Destroy(dirt.transform.GetChild(0).gameObject);
+                }
+                mudState = MudState.READY;
                 plantType = 0;
                 break;
         }

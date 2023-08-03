@@ -8,7 +8,7 @@ using Lean.Gui;
 
 public class PlayerBehavior : MonoBehaviour
 {
-    [SerializeField] private GameObject Random_Pref;
+    //[SerializeField] private GameObject Random_Pref;
     [SerializeField] private NavMeshAgent MeshAgent;
     [SerializeField] private Animator animator;
     private int Anim_Jump;
@@ -88,6 +88,7 @@ public class PlayerBehavior : MonoBehaviour
             animator.SetTrigger(Anim_Jump);
         }
         //@object.transform.position = pos;
+        /*
         if (Input.GetMouseButtonDown(1))
         {
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 1000))
@@ -95,6 +96,7 @@ public class PlayerBehavior : MonoBehaviour
                 PrefSpawn(hit);
             }
         }
+        */
         if (Input.GetKeyDown(KeyCode.F))
         {
             animator.SetTrigger(Anim_Punch);
@@ -120,6 +122,7 @@ public class PlayerBehavior : MonoBehaviour
     {
         animator.SetFloat(Anim_Speed, MeshAgent.velocity.magnitude);
     }
+    /*
     private void PrefSpawn(RaycastHit hit)
     {
         //GameObject Barrel = Instantiate(Random_Pref, new Vector3(Random.Range(10, 20), 0, Random.Range(10, 20)), Quaternion.identity);
@@ -127,6 +130,7 @@ public class PlayerBehavior : MonoBehaviour
         Rigidbody rb = Barrel.GetComponent<Rigidbody>();
         rb.AddForce((hit.point - transform.position) * 50);
     }
+    */
     /*
     private void OnTriggerEnter(Collider other)
     {

@@ -16,8 +16,6 @@ public class PlayerProfile : ISingleton<PlayerProfile>
 {
     public bool IsInit { get; private set; }
     public SaveData SaveData { get; set; }
-
-    public const string PLAYER_NAME = "NVT";
     public PlayerProfile()
     { 
         IsInit = false;
@@ -25,7 +23,7 @@ public class PlayerProfile : ISingleton<PlayerProfile>
     public void InitProfile()
     {
         Debug.Log("PlayerProfile InitProfile ");
-        FirebaseManger.Instance.ReadProfileData(PLAYER_NAME,
+        FirebaseManger.Instance.ReadProfileData(GameConfig.PLAYER_NAME,
             (rs, data) =>
             {
                 if (rs == true && data != null)
@@ -38,7 +36,7 @@ public class PlayerProfile : ISingleton<PlayerProfile>
                     Debug.LogWarning("PlayerProfile InitProfile Create new profile");
                     SaveData = new SaveData()
                     {
-                        PlayerName = "NVT",
+                        PlayerName = GameConfig.PLAYER_NAME,
                         Coin = 1000,
                         GameItems = new List<GameItems>()
                     };
@@ -50,7 +48,7 @@ public class PlayerProfile : ISingleton<PlayerProfile>
     public static Action ON_COIN_CHANGE { get; set; }
     public void SaveProfileToServer()
     {
-        FirebaseManger.Instance.WriteProfileData(PLAYER_NAME, JsonConvert.SerializeObject(SaveData));
+        FirebaseManger.Instance.WriteProfileData(GameConfig.PLAYER_NAME, JsonConvert.SerializeObject(SaveData));
     }
     public string GetName()
     {

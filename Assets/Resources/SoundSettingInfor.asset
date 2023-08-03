@@ -13,16 +13,20 @@ MonoBehaviour:
   m_Name: SoundSettingInfor
   m_EditorClassIdentifier: 
   GameBGM:
-  - id: 0
-    AudioClip: {fileID: 0}
   - id: 1
     AudioClip: {fileID: 8300000, guid: 6306498bbea9342a58ad61d5f7128830, type: 3}
   - id: 2
     AudioClip: {fileID: 8300000, guid: 87890a66193394e3cb7d6284cc6b4344, type: 3}
   GameSFX:
   - id: 1
-    AudioClip: {fileID: 0}
+    AudioClip: {fileID: 8300000, guid: 6488f3150e4125f409ed7c67fbbab7fd, type: 3}
   - id: 2
-    AudioClip: {fileID: 0}
+    AudioClip: {fileID: 8300000, guid: a3535a71166eb374995e62ac6ef6b5e0, type: 3}
   - id: 3
-    AudioClip: {fileID: 0}
+    AudioClip: {fileID: 8300000, guid: 18a4e89c3df621740b2a2174e1c333a9, type: 3}
+  - id: 4
+    AudioClip: {fileID: 8300000, guid: 9440290ca86f48c41a2abfd592a57e6c, type: 3}
+  - id: 5
+    AudioClip: {fileID: 8300000, guid: 491790dc397106a4f91b2a97a9cd2043, type: 3}
+  - id: 6
+    AudioClip: {fileID: 8300000, guid: a66a17d14d90dd54bacd17f67e214772, type: 3}

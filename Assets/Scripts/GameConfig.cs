@@ -4,7 +4,9 @@ using UnityEngine;
 
 public static class GameConfig
 {
-
+    public static float BGM_VOLUME = 0.5f;
+    public static float SFX_VOLUME = 0.5f;
+    public static string PLAYER_NAME;
 }
 
 public static class GameConstant

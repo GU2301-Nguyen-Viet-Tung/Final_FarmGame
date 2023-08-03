@@ -45,7 +45,7 @@ public class FirebaseManger : ISingleton<FirebaseManger>
         if (IsInit)
         {
             Debug.Log($"FirebaseManger WriteProfileData data = {data}");
-            System.Threading.Tasks.Task rs = DataReference.Child("PlayerData/NVT").SetRawJsonValueAsync(data);
+            System.Threading.Tasks.Task rs = DataReference.Child("PlayerData/"+key).SetRawJsonValueAsync(data);
         }
     }
 
@@ -54,7 +54,7 @@ public class FirebaseManger : ISingleton<FirebaseManger>
         if (IsInit)
         {
             Debug.Log("FirebaseManger ReadProfileData ");
-            FirebaseDatabase.DefaultInstance.GetReference("PlayerData/NVT").GetValueAsync().ContinueWithOnMainThread(task =>
+            FirebaseDatabase.DefaultInstance.GetReference("PlayerData/"+key).GetValueAsync().ContinueWithOnMainThread(task =>
             {
                 if (task.IsFaulted)
                 {

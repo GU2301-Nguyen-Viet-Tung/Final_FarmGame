@@ -14,8 +14,11 @@ public class LoadingController : MonoBehaviour
         {
             StartCoroutine(LoadingStepMenu());
         }
+        if (LoadingData.sceneToLoad == GameConstant.SCENE_GAMEPLAY)
+        {
+            StartCoroutine(LoadingStepGameplay());
+        }
     }
-
     private IEnumerator LoadingStepMenu()
     {
         Slider.value = 0f;
@@ -36,12 +39,21 @@ public class LoadingController : MonoBehaviour
         yield return new WaitUntil(() => (TransactionServer.Instance.IsInit == true));
         Slider.value = 0.8f;
         Debug.Log("LoadingController LoadingStep 4 ");
-        PlayerProfile.Instance.InitProfile();
-        yield return new WaitUntil(() => (PlayerProfile.Instance.IsInit == true));
+        //PlayerProfile.Instance.InitProfile();
+        //yield return new WaitUntil(() => (PlayerProfile.Instance.IsInit == true));
         Slider.value = 1f;
         Debug.Log("LoadingController LoadingStep 5 ");
         SceneManager.LoadScene(GameConstant.SCENE_MAINMENU);
         //Slider.value = 1f;
+        yield return null;
+    }
+    private IEnumerator LoadingStepGameplay()
+    {
+        Slider.value = 0;
+        PlayerProfile.Instance.InitProfile();
+        yield return new WaitUntil(() => (PlayerProfile.Instance.IsInit == true));
+        Slider.value = 1f;
+        SceneManager.LoadScene(GameConstant.SCENE_GAMEPLAY);
         yield return null;
     }
 }

@@ -7,61 +7,110 @@ using static CropPlan;
 
 public class UICropAction : MonoBehaviour
 {
+    [SerializeField] private Button HoeButton;
+
+    [SerializeField] private Button BrokolyButton;
+    [SerializeField] private TextMeshProUGUI BrokolyNumber;
+    [SerializeField] private Button CabbageButton;
+    [SerializeField] private TextMeshProUGUI CabbageNumber;
     [SerializeField] private Button CarrotButton;
     [SerializeField] private TextMeshProUGUI CarrotNumber;
     [SerializeField] private Button CornButton;
     [SerializeField] private TextMeshProUGUI CornNumber;
+    [SerializeField] private Button CucumberButton;
+    [SerializeField] private TextMeshProUGUI CucumberNumber;
     [SerializeField] private Button EggplantButton;
     [SerializeField] private TextMeshProUGUI EggplantNumber;
     [SerializeField] private Button PumpkinButton;
     [SerializeField] private TextMeshProUGUI PumpkinNumber;
     [SerializeField] private Button TomatoButton;
     [SerializeField] private TextMeshProUGUI TomatoNumber;
-    [SerializeField] private Button TurnipButton;
-    [SerializeField] private TextMeshProUGUI TurnipNumber;
+
+    [SerializeField] private Button WaterButton;
+
     [SerializeField] private Image HarvestImage;
     [SerializeField] private Button HarvestButton;
-    [SerializeField] private GameObject PlantButton;
-    [SerializeField] private TextMeshProUGUI PlantingTxt;
+
+    [SerializeField] private GameObject Hoe;
+    [SerializeField] private GameObject Plant;
+    [SerializeField] private GameObject Water;
+    [SerializeField] private GameObject PlantingTxt;
     [SerializeField] private GameObject Harvest;
 
     private GameplayController gameplayController;
     public void Init(GameplayController controller, CropPlan crop)
     {
         gameplayController = controller;
-        CarrotNumber.text = PlayerProfile.Instance.CheckItem(GameItemId.ITEM_SEEDS_01).ToString();
-        CornNumber.text = PlayerProfile.Instance.CheckItem(GameItemId.ITEM_SEEDS_02).ToString();
-        EggplantNumber.text = PlayerProfile.Instance.CheckItem(GameItemId.ITEM_SEEDS_03).ToString();
-        PumpkinNumber.text = PlayerProfile.Instance.CheckItem(GameItemId.ITEM_SEEDS_04).ToString();
-        TomatoNumber.text = PlayerProfile.Instance.CheckItem(GameItemId.ITEM_SEEDS_05).ToString();
-        TurnipNumber.text = PlayerProfile.Instance.CheckItem(GameItemId.ITEM_SEEDS_06).ToString();
+        BrokolyNumber.text = PlayerProfile.Instance.CheckItem(GameItemId.ITEM_SEEDS_01).ToString();
+        CabbageNumber.text = PlayerProfile.Instance.CheckItem(GameItemId.ITEM_SEEDS_02).ToString();
+        CarrotNumber.text = PlayerProfile.Instance.CheckItem(GameItemId.ITEM_SEEDS_03).ToString();
+        CornNumber.text = PlayerProfile.Instance.CheckItem(GameItemId.ITEM_SEEDS_04).ToString();
+        CucumberNumber.text = PlayerProfile.Instance.CheckItem(GameItemId.ITEM_SEEDS_05).ToString();
+        EggplantNumber.text = PlayerProfile.Instance.CheckItem(GameItemId.ITEM_SEEDS_06).ToString();
+        PumpkinNumber.text = PlayerProfile.Instance.CheckItem(GameItemId.ITEM_SEEDS_07).ToString();
+        TomatoNumber.text = PlayerProfile.Instance.CheckItem(GameItemId.ITEM_SEEDS_08).ToString();
         switch (crop.mudState)
         {
             case MudState.NONE:
-                PlantButton.SetActive(true);
-                PlantingTxt.gameObject.SetActive(false);
+                Hoe.SetActive(true);
+                Plant.SetActive(false);
+                Water.SetActive(false);
+                PlantingTxt.SetActive(false);
                 Harvest.SetActive(false);
+
+                HoeButton.onClick.RemoveAllListeners();
+                HoeButton.onClick.AddListener(delegate { crop.Hoe(); });
+                break;
+
+            case MudState.READY:
+                Hoe.SetActive(false);
+                Plant.SetActive(true);
+                Water.SetActive(false);
+                PlantingTxt.SetActive(false);
+                Harvest.SetActive(false);
+
+                BrokolyButton.onClick.RemoveAllListeners();
+                BrokolyButton.onClick.AddListener(delegate { crop.Crop(1); });
+                CabbageButton.onClick.RemoveAllListeners();
+                CabbageButton.onClick.AddListener(delegate { crop.Crop(2); });
                 CarrotButton.onClick.RemoveAllListeners();
-                CarrotButton.onClick.AddListener(delegate { crop.Crop(1); });
+                CarrotButton.onClick.AddListener(delegate { crop.Crop(3); });
                 CornButton.onClick.RemoveAllListeners();
-                CornButton.onClick.AddListener(delegate { crop.Crop(2); });
+                CornButton.onClick.AddListener(delegate { crop.Crop(4); });
+                CucumberButton.onClick.RemoveAllListeners();
+                CucumberButton.onClick.AddListener(delegate { crop.Crop(5); });
                 EggplantButton.onClick.RemoveAllListeners();
-                EggplantButton.onClick.AddListener(delegate { crop.Crop(3); });
+                EggplantButton.onClick.AddListener(delegate { crop.Crop(6); });
                 PumpkinButton.onClick.RemoveAllListeners();
-                PumpkinButton.onClick.AddListener(delegate { crop.Crop(4); });
+                PumpkinButton.onClick.AddListener(delegate { crop.Crop(7); });
                 TomatoButton.onClick.RemoveAllListeners();
-                TomatoButton.onClick.AddListener(delegate { crop.Crop(5); });
-                TurnipButton.onClick.RemoveAllListeners();
-                TurnipButton.onClick.AddListener(delegate { crop.Crop(6); });
+                TomatoButton.onClick.AddListener(delegate { crop.Crop(8); });
                 break;
+
+            case MudState.WATERING:
+                Hoe.SetActive(false);
+                Plant.SetActive(false);
+                Water.SetActive(true);
+                PlantingTxt.SetActive(false);
+                Harvest.SetActive(false);
+
+                WaterButton.onClick.RemoveAllListeners();
+                WaterButton.onClick.AddListener(delegate { crop.Water(); });
+                break;
+
             case MudState.PLANTING:
-                PlantButton.SetActive(false);
-                PlantingTxt.gameObject.SetActive(true);
+                Hoe.SetActive(false);
+                Plant.SetActive(false);
+                Water.SetActive(false);
+                PlantingTxt.SetActive(true);
                 Harvest.SetActive(false);
                 break;
+
             case MudState.DONE:
-                PlantButton.SetActive(false);
-                PlantingTxt.gameObject.SetActive(false);
+                Hoe.SetActive(false);
+                Plant.SetActive(false);
+                Water.SetActive(false);
+                PlantingTxt.SetActive(false);
                 Harvest.SetActive(true);
                 switch (crop.plantType)
                 {
@@ -83,10 +132,17 @@ public class UICropAction : MonoBehaviour
                     case 6:
                         HarvestImage.sprite = GameDataManager.Instance.GetItemSprite(GameItemId.ITEM_HARVESTED_06);
                         break;
+                    case 7:
+                        HarvestImage.sprite = GameDataManager.Instance.GetItemSprite(GameItemId.ITEM_HARVESTED_07);
+                        break;
+                    case 8:
+                        HarvestImage.sprite = GameDataManager.Instance.GetItemSprite(GameItemId.ITEM_HARVESTED_08);
+                        break;
                 }                
                 HarvestButton.onClick.RemoveAllListeners();
                 HarvestButton.onClick.AddListener(delegate { crop.Crop(0); });
                 break;
+
             default:
                 break;
         }

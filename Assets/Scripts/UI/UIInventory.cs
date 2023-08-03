@@ -25,6 +25,7 @@ public class UIInventory : MonoBehaviour
     }
     public void Close()
     {
+        SoundManager.Instance.PlaySFX(SoundEffect.SFX_02);
         Destroy(gameObject);
     }
 }
