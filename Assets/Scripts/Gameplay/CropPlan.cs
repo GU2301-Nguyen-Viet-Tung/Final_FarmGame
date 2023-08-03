@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.VFX;
 
 public class CropPlan : MonoBehaviour
 {
@@ -21,6 +22,11 @@ public class CropPlan : MonoBehaviour
     private GameplayController controller;
     private bool UIActive = false;
     public int plantType;
+
+    [SerializeField] private ParticleSystem FX_Plow;
+    [SerializeField] private ParticleSystem FX_Seed;
+    [SerializeField] private ParticleSystem FX_Water;
+    [SerializeField] private ParticleSystem FX_Harvest;
 
     public enum MudState{
         NONE,
@@ -104,6 +110,7 @@ public class CropPlan : MonoBehaviour
     {
         //gameObject.SetActive(true);
         SoundManager.Instance.PlaySFX(SoundEffect.SFX_03);
+        FX_Plow.Play();
         gameObject.GetComponent<MeshRenderer>().enabled = true;
         foreach (GameObject dirt in Dirt)
         {
@@ -119,6 +126,7 @@ public class CropPlan : MonoBehaviour
     public void Water()
     {
         SoundManager.Instance.PlaySFX(SoundEffect.SFX_05);
+        FX_Water.Play();
         mudState = MudState.PLANTING;
         if (UIActive == true)
         {
@@ -128,12 +136,14 @@ public class CropPlan : MonoBehaviour
     }
     public void Crop(int plant)
     {
-        if(plant != 0)
+        if (plant != 0)
         {
+            FX_Seed.Play();
             SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
         }
         else
         {
+            FX_Harvest.Play();
             SoundManager.Instance.PlaySFX(SoundEffect.SFX_06);
         }
         switch (plant)
@@ -144,7 +154,9 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
-                foreach(GameObject dirt in Dirt)
+                FX_Seed.Play();
+                SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
+                foreach (GameObject dirt in Dirt)
                 {
                     Instantiate(PFB_Brokoly, dirt.transform);
                 }
@@ -158,6 +170,8 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
+                FX_Seed.Play();
+                SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
                 foreach (GameObject dirt in Dirt)
                 {
                     Instantiate(PFB_Cabbage, dirt.transform);
@@ -172,6 +186,8 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
+                FX_Seed.Play();
+                SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
                 foreach (GameObject dirt in Dirt)
                 {
                     Instantiate(PFB_Carrot, dirt.transform);
@@ -186,6 +202,8 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
+                FX_Seed.Play();
+                SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
                 foreach (GameObject dirt in Dirt)
                 {
                     Instantiate(PFB_Corn, dirt.transform);
@@ -200,6 +218,8 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
+                FX_Seed.Play();
+                SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
                 foreach (GameObject dirt in Dirt)
                 {
                     Instantiate(PFB_Cucumber, dirt.transform);
@@ -214,6 +234,8 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
+                FX_Seed.Play();
+                SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
                 foreach (GameObject dirt in Dirt)
                 {
                     Instantiate(PFB_Eggplant, dirt.transform);
@@ -228,6 +250,8 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
+                FX_Seed.Play();
+                SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
                 foreach (GameObject dirt in Dirt)
                 {
                     Instantiate(PFB_Pumpkin, dirt.transform);
@@ -242,6 +266,8 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
+                FX_Seed.Play();
+                SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
                 foreach (GameObject dirt in Dirt)
                 {
                     Instantiate(PFB_Tomato, dirt.transform);
@@ -250,7 +276,7 @@ public class CropPlan : MonoBehaviour
                 mudState = MudState.WATERING;
                 plantType = 8;
                 break;
-            default:
+            default:                
                 switch (plantType)
                 {
                     case 1:
@@ -286,7 +312,9 @@ public class CropPlan : MonoBehaviour
                         PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_08, 1);
                         break;
                 }
-                foreach(GameObject dirt in Dirt)
+                FX_Harvest.Play();
+                SoundManager.Instance.PlaySFX(SoundEffect.SFX_06);
+                foreach (GameObject dirt in Dirt)
                 {                    
                     Destroy(dirt.transform.GetChild(0).gameObject);
                 }
