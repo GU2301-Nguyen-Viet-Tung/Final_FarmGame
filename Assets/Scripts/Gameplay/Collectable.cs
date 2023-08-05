@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Collectable : MonoBehaviour
 {
-    [SerializeField] public GameItemId id;
+    public GameItemId id;
     [SerializeField] private float time;
     [SerializeField] private int RespawnTime = 10;
     [SerializeField] private bool collected = false;
@@ -46,6 +44,15 @@ public class Collectable : MonoBehaviour
     }
     public void Collect()
     {
+        if (!PlayerProfile.Instance.DecreaseCoin(50))
+        {
+            return;
+        }
+        if (PlayerProfile.Instance.GetCurrentCoin() == 100)
+        {
+            Debug.LogWarning("You should plant something first!");
+            return;
+        }
         SoundManager.Instance.PlaySFX(SoundEffect.SFX_01);
         PlayerProfile.Instance.AddGameItem(id, 1);
         controller.HideCollectAction();
@@ -53,7 +60,6 @@ public class Collectable : MonoBehaviour
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
         gameObject.GetComponent<SphereCollider>().enabled = false;
         collected = true;
-        PlayerProfile.Instance.DecreaseCoin(50);
         //Destroy(gameObject);
     }
 }

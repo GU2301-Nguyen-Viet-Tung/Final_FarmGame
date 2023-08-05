@@ -1,6 +1,5 @@
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -66,7 +65,7 @@ public class PlayerProfile : ISingleton<PlayerProfile>
     }
     public bool DecreaseCoin(long num)
     {
-        if(SaveData.Coin > num)
+        if(SaveData.Coin >= num)
         {
             SaveData.Coin -= num;
             ON_COIN_CHANGE?.Invoke();
@@ -75,6 +74,7 @@ public class PlayerProfile : ISingleton<PlayerProfile>
         }
         else
         {
+            Debug.LogWarning("Not enough coins!");
             return false;
         }
     }

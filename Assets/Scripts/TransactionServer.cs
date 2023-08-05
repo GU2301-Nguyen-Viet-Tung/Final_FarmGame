@@ -10,14 +10,12 @@ public class Message
     public int number;
 }
 
-
 public class TransactionServer : ISingleton<TransactionServer>
 {
     public bool IsInit { get; private set; } = false;
 
     private const string SERVER_URL = "ws://localhost";
     private const string SERVER_PORT = "8888";
-
 
     private WebSocket m_Websocket;
 

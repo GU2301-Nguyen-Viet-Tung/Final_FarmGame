@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.VFX;
 
 public class CropPlan : MonoBehaviour
 {
@@ -27,6 +24,9 @@ public class CropPlan : MonoBehaviour
     [SerializeField] private ParticleSystem FX_Seed;
     [SerializeField] private ParticleSystem FX_Water;
     [SerializeField] private ParticleSystem FX_Harvest;
+
+    //[SerializeField] private BoxBehavior Boxes;
+    [SerializeField] private CropSpawnScript CropSpawnScript;
 
     public enum MudState{
         NONE,
@@ -112,10 +112,6 @@ public class CropPlan : MonoBehaviour
         SoundManager.Instance.PlaySFX(SoundEffect.SFX_03);
         FX_Plow.Play();
         gameObject.GetComponent<MeshRenderer>().enabled = true;
-        foreach (GameObject dirt in Dirt)
-        {
-            dirt.GetComponent<MeshRenderer>().enabled = true;
-        }
         mudState = MudState.READY;
         if (UIActive == true)
         {
@@ -138,13 +134,16 @@ public class CropPlan : MonoBehaviour
     {
         if (plant != 0)
         {
+            if (!PlayerProfile.Instance.DecreaseCoin(100))
+            {
+                return;
+            }
+            foreach (GameObject dirt in Dirt)
+            {
+                dirt.GetComponent<MeshRenderer>().enabled = true;
+            }
             FX_Seed.Play();
             SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
-        }
-        else
-        {
-            FX_Harvest.Play();
-            SoundManager.Instance.PlaySFX(SoundEffect.SFX_06);
         }
         switch (plant)
         {
@@ -154,8 +153,6 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
-                FX_Seed.Play();
-                SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
                 foreach (GameObject dirt in Dirt)
                 {
                     Instantiate(PFB_Brokoly, dirt.transform);
@@ -170,8 +167,6 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
-                FX_Seed.Play();
-                SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
                 foreach (GameObject dirt in Dirt)
                 {
                     Instantiate(PFB_Cabbage, dirt.transform);
@@ -186,8 +181,6 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
-                FX_Seed.Play();
-                SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
                 foreach (GameObject dirt in Dirt)
                 {
                     Instantiate(PFB_Carrot, dirt.transform);
@@ -202,8 +195,6 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
-                FX_Seed.Play();
-                SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
                 foreach (GameObject dirt in Dirt)
                 {
                     Instantiate(PFB_Corn, dirt.transform);
@@ -218,8 +209,6 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
-                FX_Seed.Play();
-                SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
                 foreach (GameObject dirt in Dirt)
                 {
                     Instantiate(PFB_Cucumber, dirt.transform);
@@ -234,8 +223,6 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
-                FX_Seed.Play();
-                SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
                 foreach (GameObject dirt in Dirt)
                 {
                     Instantiate(PFB_Eggplant, dirt.transform);
@@ -250,8 +237,6 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
-                FX_Seed.Play();
-                SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
                 foreach (GameObject dirt in Dirt)
                 {
                     Instantiate(PFB_Pumpkin, dirt.transform);
@@ -266,8 +251,6 @@ public class CropPlan : MonoBehaviour
                     plantType = -1;
                     break;
                 }
-                FX_Seed.Play();
-                SoundManager.Instance.PlaySFX(SoundEffect.SFX_04);
                 foreach (GameObject dirt in Dirt)
                 {
                     Instantiate(PFB_Tomato, dirt.transform);
@@ -276,40 +259,52 @@ public class CropPlan : MonoBehaviour
                 mudState = MudState.WATERING;
                 plantType = 8;
                 break;
-            default:                
+            default:
+                foreach (GameObject dirt in Dirt)
+                {
+                    dirt.GetComponent<MeshRenderer>().enabled = false;
+                }
                 switch (plantType)
                 {
                     case 1:
+                        CropSpawnScript.SpawnCrop(GameItemId.ITEM_HARVESTED_01, 4);
                         PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_01, 4);
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_01, 1);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_01, 2);
                         break;
                     case 2:
+                        CropSpawnScript.SpawnCrop(GameItemId.ITEM_HARVESTED_02, 4);
                         PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_02, 4);
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_02, 1);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_02, 2);
                         break;
                     case 3:
+                        CropSpawnScript.SpawnCrop(GameItemId.ITEM_HARVESTED_03, 4);
                         PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_03, 4);
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_03, 1);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_03, 2);
                         break;
                     case 4:
+                        CropSpawnScript.SpawnCrop(GameItemId.ITEM_HARVESTED_04, 4);
                         PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_04, 4);
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_04, 1);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_04, 2);
                         break;
                     case 5:
+                        CropSpawnScript.SpawnCrop(GameItemId.ITEM_HARVESTED_05, 4);
                         PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_05, 4);
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_05, 1);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_05, 2);
                         break;
                     case 6:
+                        CropSpawnScript.SpawnCrop(GameItemId.ITEM_HARVESTED_06, 4);
                         PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_06, 4);
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_06, 1);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_06, 2);
                         break;
                     case 7:
+                        CropSpawnScript.SpawnCrop(GameItemId.ITEM_HARVESTED_07, 4);
                         PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_07, 4);
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_07, 1);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_07, 2);
                         break;
                     case 8:
+                        CropSpawnScript.SpawnCrop(GameItemId.ITEM_HARVESTED_08, 4);
                         PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_HARVESTED_08, 4);
-                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_08, 1);
+                        PlayerProfile.Instance.AddGameItem(GameItemId.ITEM_SEEDS_08, 2);
                         break;
                 }
                 FX_Harvest.Play();
@@ -324,16 +319,12 @@ public class CropPlan : MonoBehaviour
         }
         if (plantType == 0)
         {
-            PlayerProfile.Instance.IncreaseCoin(500);
+            PlayerProfile.Instance.IncreaseCoin(200);
         }
         else if(plantType == -1)
         {
             Debug.LogWarning("No seed");
-        }
-        else
-        {
-            PlayerProfile.Instance.DecreaseCoin(100);
-        }
+        }        
         controller.HideCropAction();
         controller.ShowCropAction(this);
     }

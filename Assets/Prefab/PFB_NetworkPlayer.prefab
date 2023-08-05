@@ -70,7 +70,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 843564954815129946}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04adfbd9c861a154a8a1d96bc3ef75ca, type: 3}
+  m_Script: {fileID: 11500000, guid: f4338a47468a3d547884d3000e3ee4f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
@@ -254,8 +254,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73ee7926b63e55342ab519887401685a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Random_Pref: {fileID: 8629747978129660653, guid: 8093e91ed966e5848bd4252c5cdc07fd,
-    type: 3}
   MeshAgent: {fileID: 4675220084293604590}
   animator: {fileID: 3798456309448557886}
 --- !u!195 &4675220084293604590
